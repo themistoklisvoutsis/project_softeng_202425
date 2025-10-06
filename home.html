@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="el">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Home • MVAPP</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="icon" href="font.png"/>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="api.supabase.js"></script>
+  <style>
+    .cards{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+    .card{background:#1f1f1f;border-radius:16px;padding:16px}
+    .muted{opacity:.7}
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>Dashboard</h1>
+    <div class="cards">
+      <div class="card">
+        <h3>Σύνολο Μελών</h3>
+        <div id="membersCount" class="muted">—</div>
+      </div>
+      <div class="card">
+        <h3>Παρουσίες Σήμερα</h3>
+        <div id="attToday" class="muted">—</div>
+      </div>
+    </div>
+    <p style="margin-top:24px"><a href="index.html">← πίσω</a></p>
+  </main>
+
+  <script>
+    async function load() {
+      const members = await api('list_members');
+      document.getElementById('membersCount').textContent = members.length;
+      const today = new Date().toISOString().slice(0,10);
+      const att = await api('list_attendance', { params:{ date: today }});
+      document.getElementById('attToday').textContent = att.filter(a=>a.present).length;
+    }
+    load().catch(err=>alert(err.message));
+  </script>
+</body>
+</html>

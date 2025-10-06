@@ -1,0 +1,43 @@
+body, html { height:100%; }
+.topbar{
+  position: sticky; top:0; z-index:10;
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:14px 18px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.brand-line{ display:flex; align-items:center; gap:10px }
+.brand-line .logo{ width:36px; height:36px; border-radius:10px; }
+.brand-line h1{ margin:0; font-size:18px; font-weight:800; letter-spacing:.2px; }
+.status{ display:flex; align-items:center; gap:8px; color:var(--muted); }
+.dot{ width:10px; height:10px; border-radius:50%; background:#777; box-shadow:0 0 0 2px rgba(0,0,0,.15) inset }
+.dot.ok { background:#36d399; }
+.dot.err{ background:#ef4444; }
+
+.page-wrap{ max-width:1100px; margin:0 auto; padding:18px; }
+.card h2{ margin-top:4px; }
+
+/* ===== Ειδικό layout καρτέλας ===== */
+@media print{
+  .topbar, .toolbar{ display:none !important; }
+  body, .page-wrap, #athleteCard{ background:#fff !important; color:#000 !important; }
+  #athleteCard *{ color:#000 !important; background:#fff !important; }
+  table.sheet-table th, table.sheet-table td{ border:1px solid #000 !important; }
+}
+.sheet-grid{display:grid;grid-template-columns:140px 1fr 140px;gap:12px;align-items:center;margin-bottom:8px;}
+.logo-box{display:flex;align-items:center;justify-content:center}
+.sheet-title{text-align:center;font-weight:900;font-size:20px;letter-spacing:.6px}
+.fields{margin-top:6px}
+.field-row{display:grid;grid-template-columns:220px 1fr;gap:10px;margin:6px 0}
+.field-label{color:var(--muted);font-size:13px}
+.table-wrap{overflow:auto;border-radius:12px;border:1px solid var(--border)}
+.sheet-table{width:100%;border-collapse:collapse}
+.sheet-table th,.sheet-table td{border:1px solid var(--border);padding:8px;text-align:left}
+
+/* ===== Fade-in ===== */
+@media (prefers-reduced-motion: no-preference){
+  #athleteCard._hidden{ opacity:0; transform: translateY(10px); }
+  #athleteCard._show{ opacity:1; transform:none; transition: opacity .5s ease, transform .5s ease; }
+  #measTable tbody tr._hidden{ opacity:0; transform: translateY(6px); }
+  #measTable tbody tr._show{ opacity:1; transform:none; transition: opacity .35s ease, transform .35s ease; }
+}

@@ -1,0 +1,38 @@
+body, html { height:100%; }
+
+.topbar {
+  position: sticky; top:0; z-index:10;
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:14px 18px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.brand-line{ display:flex; align-items:center; gap:10px }
+.brand-line .logo{ width:36px; height:36px; border-radius:10px; }
+.brand-line h1{ margin:0; font-size:18px; font-weight:800; letter-spacing:.2px; }
+
+.status{ display:flex; align-items:center; gap:8px; color:var(--muted); }
+.dot{ width:10px; height:10px; border-radius:50%; background:#777; box-shadow:0 0 0 2px rgba(0,0,0,.15) inset }
+.dot.ok { background:#36d399; }
+.dot.err{ background:#ef4444; }
+
+.page-wrap{ max-width:1100px; margin:0 auto; padding:18px; }
+.page-head{ display:flex; align-items:center; gap:10px; margin:0 0 10px 0; }
+.page-head h2{ margin:0; font-weight:900; }
+.hint{ color:var(--muted); }
+
+.card h2{ margin-top:4px; }
+.table-wrap{ border-radius:14px; }
+
+@media (max-width:640px){
+  .page-head{ flex-direction:column; align-items:flex-start; }
+}
+
+/* Fade-in effects */
+@media (prefers-reduced-motion: no-preference){
+  .card._hidden{ opacity:0; transform: translateY(10px); }
+  .card._show{ opacity:1; transform:none; transition: opacity .6s ease, transform .6s ease; }
+  #membersList tbody tr._hidden{ opacity:0; transform: translateY(6px); }
+  #membersList tbody tr._show{ opacity:1; transform:none; transition: opacity .35s ease, transform .35s ease; }
+}

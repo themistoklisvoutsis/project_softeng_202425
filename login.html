@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Σύνδεση</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+</head>
+<body class="bg-dark text-light">
+  <div class="container py-5">
+    <div class="mx-auto" style="max-width:420px">
+      <h1 class="h3 mb-4">Σύνδεση</h1>
+
+      <div id="alert" class="alert alert-danger d-none"></div>
+
+      <form id="loginForm" action="#" method="post" novalidate>
+        <div class="mb-3">
+          <label class="form-label">Όνομα χρήστη</label>
+          <!-- ΣΗΜΑΝΤΙΚΟ: type="text", ΟΧΙ email -->
+          <input id="name" type="text" class="form-control form-control-lg"
+                 placeholder="admin" autocomplete="username" required />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Κωδικός</label>
+          <div class="position-relative">
+            <input type="password" id="password" class="form-control form-control-lg pe-5"
+                   placeholder="••••••" autocomplete="current-password" required />
+            <button class="btn position-absolute top-50 end-0 translate-middle-y me-2"
+                    type="button" id="togglePwd" aria-label="Εναλλαγή ορατότητας">
+              <i class="bi bi-eye-fill" id="pwdIcon"></i>
+            </button>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-lg w-100" type="submit">Σύνδεση</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ΣΩΣΤΗ ΣΕΙΡΑ: supabase -> api.js -> login.js -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <script src="api.js"></script>
+  <script src="login.js"></script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="el">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Παρουσίες</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="icon" href="font.png"/>
+
+  <style>
+    /* ====== Layout / theme ====== */
+    :root{
+      --glass: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
+    }
+    html,body{height:100%}
+    body{
+      background:
+        radial-gradient(1100px 600px at 70% -10%, rgba(255,209,0,.10), transparent 60%),
+        radial-gradient(900px 500px at -15% 0%, rgba(255,209,0,.06), transparent 50%),
+        var(--bg, #0a0a0a);
+    }
+
+    .topbar{
+      position: sticky; top:0; z-index:10;
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      padding:14px 18px;
+      background: var(--glass);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(6px);
+    }
+    .brand-line{display:flex; gap:10px; align-items:center}
+    .brand-line .logo{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--accent2),var(--accent));box-shadow:0 6px 18px rgba(255,209,0,.25)}
+    .brand-line h1{margin:0;font-size:18px;font-weight:800}
+    .status{display:flex;gap:8px;align-items:center;color:var(--muted)}
+    .dot{width:10px;height:10px;border-radius:50%;background:#555}
+    .dot.ok{background:var(--ok)}
+    .dot.err{background:var(--danger)}
+
+    .page{
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 20px 18px 28px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 980px){
+      .page{
+        grid-template-columns: 380px 1fr; /* αριστερά φόρμα, δεξιά λίστα */
+        align-items: start;
+      }
+    }
+
+    /* ====== Blocks ====== */
+    .block{
+      border:1px solid var(--border);
+      border-radius:18px;
+      background: var(--glass);
+      box-shadow: 0 18px 40px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.04);
+      padding: 14px;
+    }
+    .block h2{
+      margin: 2px 0 12px;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: .2px;
+    }
+
+    /* ====== Toolbar (πάνω από τη λίστα) ====== */
+    .toolbar{
+      display:flex; flex-wrap:wrap; gap:8px; align-items:center;
+      border:1px dashed rgba(255,209,0,.25);
+      padding:10px; border-radius:12px;
+      background: rgba(255,255,255,.02);
+    }
+    .ctrl{
+      display:flex; align-items:center; gap:8px;
+      background:#111; border:1px solid var(--border);
+      padding:8px 10px; border-radius:12px;
+    }
+    .ctrl input[type="date"]{background:transparent;border:0;color:inherit;outline:none}
+    .btn{
+      border:1px solid var(--border); background:#1d1d1d; color:#fff;
+      padding:9px 12px; border-radius:10px; cursor:pointer;
+    }
+    .btn.icon{width:36px;height:36px;display:inline-grid;place-items:center;padding:0}
+    .btn.primary{ background: var(--accent); color:#000; border-color: rgba(255,209,0,.55); }
+    .btn.ghost{ background: transparent; }
+
+    /* ====== Form ====== */
+    .form-grid{ display:grid; gap:10px }
+    .field{ display:flex; flex-direction:column; gap:6px }
+    .field input, .field textarea{
+      border:1px solid var(--border); background:#141414; color:#fff;
+      padding:10px 12px; border-radius:10px; outline:none;
+    }
+    .field textarea{ min-height:42px; resize:vertical }
+    @media (min-width: 520px){
+      .form-grid{ grid-template-columns: 1fr 1fr }
+      .form-grid .field.note { grid-column: 1 / -1; }
+    }
+
+    /* ====== List/table styling (συμβατό με το attendance.js σου) ====== */
+    #todayList .muted{ color: var(--muted); }
+    #todayList table{
+      width:100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background:#0f0f0f;
+      border:1px solid var(--border);
+      border-radius:14px;
+      overflow: hidden;
+    }
+    #todayList thead th{
+      text-align:left; font-weight:700; font-size:13px; color:#ddd;
+      background: rgba(255,255,255,.03);
+      padding:10px 12px;
+      position: sticky; top:0; z-index:1;
+    }
+    #todayList tbody td{
+      padding:10px 12px; border-top:1px solid rgba(255,255,255,.06);
+    }
+    #todayList tbody tr:hover{ background: rgba(255,255,255,.02); }
+    #todayList .kbd{ display:inline-block; padding:2px 6px; border-radius:6px; background:#131313; border:1px solid var(--border); font-size:12px }
+
+    /* μικρή είσοδος στη λίστα */
+    #todayList._fade table{ animation: fIn .28s ease }
+    @keyframes fIn{ from{opacity:0; transform: translateY(6px)} to{opacity:1; transform:none} }
+
+    /* ====== Mobile tweaks ====== */
+    @media (max-width: 640px){
+      .btn{ padding:9px 10px }
+    }
+  </style>
+</head>
+<body>
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="brand-line">
+      <div class="logo"></div>
+      <h1>Παρουσίες</h1>
+    </div>
+    <div class="status">
+      <span id="connDot" class="dot"></span>
+      <span id="connText">—</span>
+    </div>
+  </header>
+
+  <main class="page">
+    <!-- Αριστερά: φόρμα γρήγορης καταχώρισης -->
+    <section class="block">
+      <h2>Γρήγορη καταχώριση</h2>
+      <form id="markAttendanceForm" class="form-grid" autocomplete="off">
+        <div class="field">
+          <label for="memberId">Μέλος (ID)</label>
+          <input id="memberId" inputmode="numeric" placeholder="π.χ. 42"/>
+        </div>
+        <div class="field">
+          <label for="attDate">Ημερομηνία</label>
+          <input type="date" id="attDate"/>
+        </div>
+        <div class="field note">
+          <label for="note">Σημείωση (προαιρετικά)</label>
+          <textarea id="note" rows="1" placeholder="π.χ. καθυστέρηση, τραυματισμός…"></textarea>
+        </div>
+        <div class="field">
+          <label>&nbsp;</label>
+          <button class="btn primary" type="submit">+ Καταχώριση</button>
+        </div>
+        <div class="field" style="align-self:center">
+          <output id="markMsg" class="muted"></output>
+        </div>
+      </form>
+    </section>
+
+    <!-- Δεξιά: φίλτρο και λίστα ημέρας -->
+    <section class="block">
+      <div class="toolbar" style="margin-bottom:10px">
+        <div class="ctrl">
+          <strong style="opacity:.9">Ημερομηνία</strong>
+          <input type="date" id="filterDate" aria-label="Ημερομηνία λίστας">
+        </div>
+        <button id="prevDate" class="btn icon" title="Προηγούμενη ημέρα">‹</button>
+        <button id="btnToday" class="btn ghost" title="Σήμερα">Σήμερα</button>
+        <button id="nextDate" class="btn icon" title="Επόμενη ημέρα">›</button>
+        <button id="btnFilterDate" class="btn" title="Εμφάνιση">Εμφάνιση</button>
+        <span class="muted" style="margin-left:auto;font-size:12px">Το header είναι sticky — αλλάζεις γρήγορα ημερομηνία.</span>
+      </div>
+
+      <h2 style="margin-top:0">Λίστα ημέρας</h2>
+      <div id="todayList" class="_fade">—</div>
+    </section>
+
+    <div style="grid-column: 1 / -1; text-align:center; margin-top:6px">
+      <a class="btn ghost" href="index.html">← πίσω</a>
+    </div>
+  </main>
+
+  <div class="toasts" id="toasts"></div>
+
+  <!-- Σειρά scripts: supabase -> api.js -> attendance.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="api.js"></script>
+  <script src="attendance.js" defer></script>
+</body>
+</html>
